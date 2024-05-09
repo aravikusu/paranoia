@@ -30,16 +30,21 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
         .direction(Direction::Vertical)
         .constraints([
             Constraint::Percentage(2),
-            Constraint::Percentage(5),
+            Constraint::Percentage(10),
             Constraint::Percentage(5),
             Constraint::Fill(1),
             Constraint::Percentage(10),
         ])
         .split(chunks[0]);
 
-    let header = Paragraph::new("-paranoia settings-");
+
+    let text = vec![
+        "-paranoia settings-".bold().into(),
+        "customize your experience.".italic().into(),
+    ];
+    let header = Paragraph::new(text);
     frame.render_widget(
-        header.alignment(Alignment::Center).style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)).bold()),
+        header.alignment(Alignment::Center).style(Style::default().fg(AppTheme::fg_color(&app.settings.theme))),
         inner[1],
     );
 
@@ -52,7 +57,8 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
         ])
         .split(inner[3]);
 
-    let page = Title::from(Line::from(vec!["page 1/1".into()]));
+    let page = Title::from(Line::from(vec![format!("page{}/1", &app.settings_state.page_idx).into()]));
+    let page_name = get_page_name(&app.settings_state.page_idx);
 
     let list_block = Block::default()
         .title("settings")
@@ -61,20 +67,25 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
                 .alignment(Alignment::Right)
                 .position(Position::Bottom),
         )
+        .title(
+            page_name
+                .alignment(Alignment::Left)
+                .position(Position::Bottom),
+        )
         .title_alignment(Alignment::Left)
         .borders(Borders::ALL)
         .border_style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)));
-    
+
     let page1items = [
         ListItem::new(Text::from("default").alignment(Alignment::Center)),
         ListItem::new(Text::from("vaporwave").alignment(Alignment::Center)),
     ];
-    
+
     let items = match app.settings_state.page_idx {
         1 => page1items,
         _ => page1items
     };
-    
+
     let settings = List::new(items)
         .block(list_block)
         .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
@@ -93,4 +104,11 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
         settings,
         main_part[1],
         &mut ListState::default().with_selected(Some(app.settings_state.menu_idx)));
+}
+
+fn get_page_name(idx: &usize) -> Title {
+    match idx {
+        1 => Title::from("themes"),
+        _ => Title::from("themes"),
+    }
 }

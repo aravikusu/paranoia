@@ -54,15 +54,19 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
             [
                 Constraint::Percentage(5),
                 Constraint::Percentage(5),
-                Constraint::Percentage(1),
+                Constraint::Percentage(5),
                 Constraint::Fill(1),
                 Constraint::Percentage(5),
             ]
         )
         .split(chunks[0]);
 
+    let text = vec![
+        "-paranoia manual-".bold().into(),
+        "this is the manual for paranoia. read about the what's, the how's, and the why's here.".italic().into(),
+    ];
     frame.render_widget(
-        Paragraph::new("this is the manual for paranoia. read about the what's, the how's, and the why's here.")
+        Paragraph::new(text)
             .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
             .alignment(Alignment::Center),
         inner[1]);
