@@ -28,7 +28,7 @@ pub struct SettingsToml {
     settings: AppSettings,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub enum AppTheme {
     Default = 0,
     Vaporwave = 1,
@@ -50,7 +50,7 @@ impl AppTheme {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub struct AppSettings {
     pub theme: AppTheme,
 }
@@ -94,8 +94,23 @@ impl AppSettings {
         }
         settings.settings
     }
+    
+    pub fn save_settings(&self) {
+        let settings = SettingsToml {
+            paranoia: ParanoiaGeneral::default(),
+            settings: *self
+        };
+        let toml_settings = toml::to_string(&settings).unwrap();
+        
+        let settings_file = fs::File::create(SETTINGS_FILE);
+        if let Ok(mut file) = settings_file {
+            file.write_all(toml_settings.as_bytes()).expect("Yep");
+        }
+    }
 
     pub fn change_theme(&mut self, theme: AppTheme) {
         self.theme = theme;
+        
+        self.save_settings();
     }
 }

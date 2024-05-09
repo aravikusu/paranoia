@@ -48,6 +48,7 @@ impl App {
 
     /// Closes the app (big surprise).
     pub fn quit(&mut self) {
+        self.settings.save_settings();
         self.running = false;
     }
 
