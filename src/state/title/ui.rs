@@ -2,6 +2,7 @@ use ratatui::prelude::*;
 use ratatui::widgets::{Block, Borders, HighlightSpacing, List, ListDirection, ListItem, ListState, Paragraph};
 use ratatui::widgets::block::Title;
 use crate::app::App;
+use crate::app_settings::AppTheme;
 
 const LOGO: &str = "_________                                         .__    _____
 \\______   \\_____   _______ _____     ____    ____  |__|  /  _  \\
@@ -12,12 +13,12 @@ const LOGO: &str = "_________                                         .__    ___
 -a text adventure by aravix-
 ";
 
-pub fn instructions() -> Title<'static> {
+pub fn instructions(app: &App) -> Title<'static> {
     Title::from(Line::from(vec![
         " select ".into(),
-        "<ENTER> ".light_red().bold(),
+        "<ENTER> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
         " navigate ".into(),
-        "<WASD/ARROW KEYS> ".light_red().bold(),
+        "<WASD/ARROW KEYS> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
     ]))
 }
 
@@ -48,7 +49,7 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
     frame.render_widget(
         Paragraph::new(LOGO)
             .block(Block::new().borders(Borders::empty()))
-            .style(Style::default().fg(Color::LightYellow).bg(Color::Black))
+            .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)).bg(Color::Black))
             .centered(),
         inner[1],
     );
@@ -75,14 +76,14 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
             Block::default()
                 .title("main menu")
                 .borders(Borders::ALL)
-                .border_style(Style::default().fg(Color::LightYellow))
+                .border_style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
         )
-        .style(Style::default().fg(Color::LightYellow))
+        .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
         .highlight_style(
             Style::default()
                 .add_modifier(Modifier::ITALIC)
                 .fg(Color::Black)
-                .bg(Color::LightYellow)
+                .bg(AppTheme::fg_color(&app.settings.theme))
         )
         .highlight_symbol(">>")
         .repeat_highlight_symbol(true)

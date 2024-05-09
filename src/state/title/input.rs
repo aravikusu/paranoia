@@ -1,4 +1,5 @@
 use crossterm::event::{KeyCode, KeyEvent};
+
 use crate::app::{App, GameState};
 
 pub fn handle_input(key_event: KeyEvent, app: &mut App) {

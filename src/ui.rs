@@ -1,15 +1,14 @@
 use ratatui::{
+    Frame,
     layout::Alignment,
     widgets::{Block, BorderType},
-    Frame,
 };
 use ratatui::prelude::Style;
-use ratatui::style::Color;
 use ratatui::widgets::block::Position;
 
 use crate::app::{App, GameState};
-use crate::state::{title, manual, settings};
-
+use crate::app_settings::AppTheme;
+use crate::state::{manual, settings, title};
 
 /// Renders the user interface widgets.
 pub fn render(app: &mut App, frame: &mut Frame) {
@@ -21,10 +20,10 @@ pub fn render(app: &mut App, frame: &mut Frame) {
     // The bottom of the main frame always displays the controls for the current screen.
     // An "intuitive" way of making sure the player knows what buttons do what.
     let instructions = match app.game_state {
-        GameState::Title => title::ui::instructions(),
-        GameState::Manual => manual::ui::instructions(),
-        GameState::Settings => settings::ui::instructions(),
-        _ => title::ui::instructions(),
+        GameState::Title => title::ui::instructions(app),
+        GameState::Manual => manual::ui::instructions(app),
+        GameState::Settings => settings::ui::instructions(app),
+        _ => title::ui::instructions(app),
     };
 
     // The main frame around the entire game.
@@ -37,8 +36,8 @@ pub fn render(app: &mut App, frame: &mut Frame) {
         )
         .title_alignment(Alignment::Center)
         .border_type(BorderType::Rounded)
-        .style(Style::default().fg(Color::LightYellow));
-    
+        .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)));
+
     // Whatever goes inside the main frame is decided by the game state.
     match app.game_state {
         GameState::Title => title::ui::layout(app, frame, block),

@@ -1,10 +1,12 @@
 use ratatui::Frame;
 use ratatui::layout::{Constraint, Direction, Layout};
-use ratatui::prelude::{Alignment, Line, Stylize};
-use ratatui::style::{Color, Style};
+use ratatui::prelude::{Alignment, Line, Styled, Stylize};
+use ratatui::style::Style;
 use ratatui::widgets::{Block, Borders, BorderType, Paragraph};
 use ratatui::widgets::block::{Position, Title};
+
 use crate::app::App;
+use crate::app_settings::AppTheme;
 
 const MANUAL_TEXT: &str = "INTRODUCTION
 
@@ -26,16 +28,16 @@ The bee, of course, flies anyway
 because bees don't care
 what humans think is impossible.";
 
-pub fn instructions() -> Title<'static> {
+pub fn instructions(app: &App) -> Title<'static> {
     Title::from(Line::from(vec![
         " change page ".into(),
-        "<WASD/ARROW KEYS> ".light_red().bold(),
+        "<WASD/ARROW KEYS> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
         " go back ".into(),
-        "<ESC/BACKSPACE> ".light_red().bold(),
+        "<ESC/BACKSPACE> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
     ]))
 }
 
-pub fn layout(_app: &mut App, frame: &mut Frame, main_block: Block) {
+pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
     let chunks = Layout::default()
         .direction(Direction::Horizontal)
         .constraints(
@@ -61,7 +63,7 @@ pub fn layout(_app: &mut App, frame: &mut Frame, main_block: Block) {
 
     frame.render_widget(
         Paragraph::new("this is the manual for paranoia. read about the what's, the how's, and the why's here.")
-            .style(Style::default().fg(Color::LightYellow))
+            .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
             .alignment(Alignment::Center),
         inner[1]);
 
