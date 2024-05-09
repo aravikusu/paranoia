@@ -1,4 +1,7 @@
 use std::error;
+
+use crate::app_settings::AppSettings;
+use crate::state::settings::SettingsState;
 use crate::state::title::TitleState;
 
 /// Application result type.
@@ -17,8 +20,10 @@ pub enum GameState {
 pub struct App {
     pub game_state: GameState,
     pub running: bool,
-    
+    pub settings: AppSettings,
+
     pub title_state: TitleState,
+    pub settings_state: SettingsState,
 }
 
 impl Default for App {
@@ -26,7 +31,9 @@ impl Default for App {
         Self {
             game_state: GameState::Title,
             running: true,
-            title_state: TitleState::default()
+            settings: AppSettings::initialize(),
+            title_state: TitleState::default(),
+            settings_state: SettingsState::default(),
         }
     }
 }
@@ -43,7 +50,7 @@ impl App {
     pub fn quit(&mut self) {
         self.running = false;
     }
-    
+
     pub fn change_game_state(&mut self, state: GameState) {
         self.game_state = state;
     }
