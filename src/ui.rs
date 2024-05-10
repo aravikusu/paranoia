@@ -3,7 +3,7 @@ use ratatui::{
     layout::Alignment,
     widgets::{Block, BorderType},
 };
-use ratatui::prelude::Style;
+use ratatui::prelude::{Color, Style};
 use ratatui::widgets::block::Position;
 
 use crate::app::{App, GameState};
@@ -36,7 +36,7 @@ pub fn render(app: &mut App, frame: &mut Frame) {
         )
         .title_alignment(Alignment::Center)
         .border_type(BorderType::Rounded)
-        .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)));
+        .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)).bg(Color::Black));
 
     // Whatever goes inside the main frame is decided by the game state.
     match app.game_state {

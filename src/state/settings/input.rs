@@ -20,7 +20,9 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
             if app.settings_state.page_idx == 1 {
                 match app.settings_state.menu_idx {
                     0 => app.settings.change_theme(AppTheme::Default),
-                    _ => app.settings.change_theme(AppTheme::Vaporwave),
+                    1 => app.settings.change_theme(AppTheme::Vaporwave),
+                    2 => app.settings.change_theme(AppTheme::Piccolo),
+                    _ => app.settings.change_theme(AppTheme::Monochrome),
                 }
             }
         }

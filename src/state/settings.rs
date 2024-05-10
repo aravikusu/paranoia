@@ -7,6 +7,8 @@ pub struct SettingsState {
     pub page_idx: usize
 }
 
+const MENU1_ITEMS: usize = 3;
+
 impl Default for SettingsState {
     fn default() -> Self {
         Self {
@@ -18,7 +20,7 @@ impl Default for SettingsState {
 
 impl SettingsState{
     pub fn increment_menu_idx(&mut self) {
-        if self.menu_idx == 1 {
+        if self.menu_idx == MENU1_ITEMS {
             self.menu_idx = 0
         } else {
             self.menu_idx += 1
@@ -27,7 +29,7 @@ impl SettingsState{
 
     pub fn decrement_menu_idx(&mut self) {
         if self.menu_idx == 0 {
-            self.menu_idx = 1
+            self.menu_idx = MENU1_ITEMS
         } else {
             self.menu_idx -= 1
         }

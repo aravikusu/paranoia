@@ -57,19 +57,14 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
         ])
         .split(inner[3]);
 
-    let page = Title::from(Line::from(vec![format!("page{}/1", &app.settings_state.page_idx).into()]));
+    let page = Title::from(Line::from(vec![format!("page {}/1", &app.settings_state.page_idx).into()]));
     let page_name = get_page_name(&app.settings_state.page_idx);
 
     let list_block = Block::default()
-        .title("settings")
+        .title(page_name)
         .title(
             page
                 .alignment(Alignment::Right)
-                .position(Position::Bottom),
-        )
-        .title(
-            page_name
-                .alignment(Alignment::Left)
                 .position(Position::Bottom),
         )
         .title_alignment(Alignment::Left)
@@ -79,6 +74,8 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
     let page1items = [
         ListItem::new(Text::from("default").alignment(Alignment::Center)),
         ListItem::new(Text::from("vaporwave").alignment(Alignment::Center)),
+        ListItem::new(Text::from("piccolo").alignment(Alignment::Center)),
+        ListItem::new(Text::from("monochrome").alignment(Alignment::Center)),
     ];
 
     let items = match app.settings_state.page_idx {

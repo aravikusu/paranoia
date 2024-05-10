@@ -49,7 +49,7 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
     frame.render_widget(
         Paragraph::new(LOGO)
             .block(Block::new().borders(Borders::empty()))
-            .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)).bg(Color::Black))
+            .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
             .centered(),
         inner[1],
     );

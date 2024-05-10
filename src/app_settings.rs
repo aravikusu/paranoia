@@ -32,6 +32,8 @@ pub struct SettingsToml {
 pub enum AppTheme {
     Default = 0,
     Vaporwave = 1,
+    Piccolo = 2,
+    Monochrome = 3,
 }
 
 impl AppTheme {
@@ -39,6 +41,8 @@ impl AppTheme {
         match theme {
             AppTheme::Default => Color::LightYellow,
             AppTheme::Vaporwave => Color::LightMagenta,
+            AppTheme::Piccolo => Color::Green,
+            AppTheme::Monochrome => Color::Gray
         }
     }
 
@@ -46,6 +50,8 @@ impl AppTheme {
         match theme {
             AppTheme::Default => Color::LightRed,
             AppTheme::Vaporwave => Color::LightCyan,
+            AppTheme::Piccolo => Color::Magenta,
+            AppTheme::Monochrome => Color::DarkGray,
         }
     }
 }

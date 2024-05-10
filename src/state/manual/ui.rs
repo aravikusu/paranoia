@@ -8,9 +8,7 @@ use ratatui::widgets::block::{Position, Title};
 use crate::app::App;
 use crate::app_settings::AppTheme;
 
-const MANUAL_TEXT: &str = "INTRODUCTION
-
-According to all known laws
+const MANUAL_TEXT: &str = "According to all known laws
 of aviation,
 
 
@@ -87,7 +85,7 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
     let manual_block = Block::default()
         .borders(Borders::ALL)
         .border_type(BorderType::Rounded)
-        .title("manual")
+        .title("intro")
         .title(
             page
                 .alignment(Alignment::Right)
