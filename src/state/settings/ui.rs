@@ -1,8 +1,10 @@
 use ratatui::prelude::*;
-use ratatui::widgets::{Block, Borders, HighlightSpacing, List, ListDirection, ListItem, ListState, Paragraph};
+use ratatui::widgets::{Block, Borders, HighlightSpacing, List, ListDirection, ListItem, ListState};
 use ratatui::widgets::block::{Position, Title};
+
 use crate::app::App;
 use crate::app_settings::AppTheme;
+use crate::util::menu_header;
 
 pub fn instructions(app: &App) -> Title<'static> {
     Title::from(Line::from(vec![
@@ -15,17 +17,7 @@ pub fn instructions(app: &App) -> Title<'static> {
     ]))
 }
 
-pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
-    let chunks = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints(
-            [
-                Constraint::Percentage(100)
-            ]
-        )
-        .split(main_block.inner(frame.size()));
-    frame.render_widget(main_block, frame.size());
-
+pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {
     let inner = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
@@ -35,18 +27,16 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
             Constraint::Fill(1),
             Constraint::Percentage(10),
         ])
-        .split(chunks[0]);
+        .split(main_layout[0]);
 
 
-    let text = vec![
+    let header = vec![
         "-paranoia settings-".bold().into(),
         "customize your experience.".italic().into(),
     ];
-    let header = Paragraph::new(text);
     frame.render_widget(
-        header.alignment(Alignment::Center).style(Style::default().fg(AppTheme::fg_color(&app.settings.theme))),
-        inner[1],
-    );
+        menu_header(header, AppTheme::fg_color(&app.settings.theme)),
+        inner[1]);
 
     let main_part = Layout::default()
         .direction(Direction::Horizontal)

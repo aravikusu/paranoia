@@ -10,7 +10,7 @@ pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
 #[derive(Debug)]
 pub enum GameState {
     Title = 0,
-    CharacterCreation = 1,
+    GameSetup = 1,
     Game = 2,
     Manual = 3,
     Settings = 4,

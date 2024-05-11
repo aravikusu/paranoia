@@ -1,7 +1,7 @@
 use crate::app::{App, AppResult, GameState};
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 
-use crate::state::{title, manual, settings};
+use crate::state::{title, manual, settings, game_setup};
 
 pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
     // Application-wide events
@@ -17,7 +17,7 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
     
     match app.game_state {
         GameState::Title => title::input::handle_input(key_event, app),
-        GameState::CharacterCreation => {}
+        GameState::GameSetup => game_setup::input::handle_input(key_event, app),
         GameState::Game => {}
         GameState::Manual => manual::input::handle_input(key_event, app),
         GameState::Settings => settings::input::handle_input(key_event, app)

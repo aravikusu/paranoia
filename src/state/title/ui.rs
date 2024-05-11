@@ -22,17 +22,7 @@ pub fn instructions(app: &App) -> Title<'static> {
     ]))
 }
 
-pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
-    let chunks = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints(
-            [
-                Constraint::Percentage(100)
-            ]
-        )
-        .split(main_block.inner(frame.size()));
-    frame.render_widget(main_block, frame.size());
-
+pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {
     let inner = Layout::default()
         .direction(Direction::Vertical)
         .constraints(
@@ -43,7 +33,7 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
                 Constraint::Percentage(35)
             ]
         )
-        .split(chunks[0]);
+        .split(main_layout[0]);
 
 
     frame.render_widget(

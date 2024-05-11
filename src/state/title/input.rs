@@ -13,7 +13,7 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
         }
         KeyCode::Enter => {
             match app.title_state.menu_idx {
-                0 => app.change_game_state(GameState::CharacterCreation),
+                0 => app.change_game_state(GameState::GameSetup),
                 1 => app.change_game_state(GameState::Settings),
                 2 => app.change_game_state(GameState::Manual),
                 _ => app.quit()

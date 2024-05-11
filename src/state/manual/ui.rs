@@ -1,5 +1,5 @@
 use ratatui::Frame;
-use ratatui::layout::{Constraint, Direction, Layout};
+use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::prelude::{Alignment, Line, Styled, Stylize};
 use ratatui::style::Style;
 use ratatui::widgets::{Block, Borders, BorderType, Paragraph};
@@ -7,6 +7,7 @@ use ratatui::widgets::block::{Position, Title};
 
 use crate::app::App;
 use crate::app_settings::AppTheme;
+use crate::util::menu_header;
 
 const MANUAL_TEXT: &str = "According to all known laws
 of aviation,
@@ -35,17 +36,7 @@ pub fn instructions(app: &App) -> Title<'static> {
     ]))
 }
 
-pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
-    let chunks = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints(
-            [
-                Constraint::Percentage(100)
-            ]
-        )
-        .split(main_block.inner(frame.size()));
-    frame.render_widget(main_block, frame.size());
-
+pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect;1]) {
     let inner = Layout::default()
         .direction(Direction::Vertical)
         .constraints(
@@ -57,16 +48,14 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
                 Constraint::Percentage(5),
             ]
         )
-        .split(chunks[0]);
+        .split(main_layout[0]);
 
-    let text = vec![
+    let header = vec![
         "-paranoia manual-".bold().into(),
         "this is the manual for paranoia. read about the what's, the how's, and the why's here.".italic().into(),
     ];
     frame.render_widget(
-        Paragraph::new(text)
-            .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
-            .alignment(Alignment::Center),
+        menu_header(header, AppTheme::fg_color(&app.settings.theme)),
         inner[1]);
 
     let main_part = Layout::default()
@@ -95,5 +84,4 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: Block) {
         .title_position(Position::Top);
 
     frame.render_widget(Paragraph::new(MANUAL_TEXT).alignment(Alignment::Center).block(manual_block.clone()), main_part[1]);
-    frame.render_widget(manual_block, main_part[1]);
 }
