@@ -2,6 +2,7 @@ use ratatui::prelude::*;
 use ratatui::widgets::{Block, Borders, BorderType, Paragraph};
 use ratatui::widgets::block::Position;
 
+/// The general outlined Block used everywhere.
 pub fn block_preset<'a>(title: String) -> Block<'a> {
     Block::default()
         .borders(Borders::ALL)
