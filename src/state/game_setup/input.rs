@@ -13,30 +13,24 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
             },
         }
     } else {
-        match key_event.code {
-            KeyCode::Enter => {
-                if app.game_setup_state.menu_idx == 0 {
-                    app.game_setup_state.toggle_edit();
-                }
+        match (key_event.code, app.game_setup_state.menu_idx) {
+            (KeyCode::Enter, 0) => {
+                app.game_setup_state.toggle_edit();
             }
-            KeyCode::Char('w') | KeyCode::Char('W') | KeyCode::Up => {
+            (KeyCode::Char('w') | KeyCode::Char('W') | KeyCode::Up, _) => {
                 app.game_setup_state.decrement_menu_idx();
             }
-            KeyCode::Char('s') | KeyCode::Char('S') | KeyCode::Down => {
+            (KeyCode::Char('s') | KeyCode::Char('S') | KeyCode::Down, _) => {
                 app.game_setup_state.increment_menu_idx();
             }
-            KeyCode::Esc | KeyCode::Backspace => {
+            (KeyCode::Esc | KeyCode::Backspace, _) => {
                 app.change_game_state(GameState::Title);
             }
-            KeyCode::Char('a') | KeyCode::Char('A') | KeyCode::Left => {
-                if app.game_setup_state.menu_idx == 1 {
-                    app.game_setup_state.decrement_paranoia_level();
-                } 
+            (KeyCode::Char('a') | KeyCode::Char('A') | KeyCode::Left, 1) => {
+                app.game_setup_state.decrement_paranoia_level();
             }
-            KeyCode::Char('d') | KeyCode::Char('D') | KeyCode::Right => {
-                if app.game_setup_state.menu_idx == 1 {
-                    app.game_setup_state.increment_paranoia_level();
-                }
+            (KeyCode::Char('d') | KeyCode::Char('D') | KeyCode::Right, 1) => {
+                app.game_setup_state.increment_paranoia_level();
             }
             _ => {}
         }

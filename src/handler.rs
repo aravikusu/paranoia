@@ -5,14 +5,8 @@ use crate::state::{title, manual, settings, game_setup};
 
 pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
     // Application-wide events
-    match key_event.code {
-        // Exit application on `Ctrl-C`
-        KeyCode::Char('c') | KeyCode::Char('C') => {
-            if key_event.modifiers == KeyModifiers::CONTROL {
-                app.quit();
-            }
-        }
-        _ => {}
+    if let (KeyCode::Char('c') | KeyCode::Char('C'), KeyModifiers::CONTROL) = (key_event.code, key_event.modifiers) {
+        app.quit()
     }
     
     match app.game_state {

@@ -1,17 +1,9 @@
 pub mod ui;
 pub mod input;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct TitleState {
     pub menu_idx: usize
-}
-
-impl Default for TitleState {
-    fn default() -> Self {
-        Self {
-            menu_idx: 0
-        }
-    }
 }
 
 impl TitleState {
