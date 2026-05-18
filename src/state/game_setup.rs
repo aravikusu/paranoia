@@ -38,9 +38,9 @@ impl GameSetupState<'_> {
     }
 
     pub fn increment_paranoia_level(&mut self) {
-        self.paranoia = cmp::min(100, self.paranoia + 5);
+        self.paranoia = cmp::min(100, self.paranoia + 1);
     }
     pub fn decrement_paranoia_level(&mut self) {
-        self.paranoia = cmp::max(0, self.paranoia - 5);
+        self.paranoia = cmp::max(0, self.paranoia - 1);
     }
 }
