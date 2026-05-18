@@ -1,22 +1,20 @@
 use std::cmp;
 
-use ratatui_textarea::TextArea;
-
 pub mod input;
 pub mod ui;
 
 #[derive(Debug, Default)]
-pub struct GameSetupState<'a> {
+pub struct GameSetupState {
     pub menu_idx: usize,
     pub editing_name: bool,
     pub item_list_idx: usize,
 
-    pub name_input: TextArea<'a>,
+    pub name: String,
     pub paranoia: i32,
     pub starting_item: String,
 }
 
-impl GameSetupState<'_> {
+impl GameSetupState {
     pub fn toggle_edit(&mut self) {
         self.editing_name = !self.editing_name;
     }

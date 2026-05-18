@@ -1,6 +1,7 @@
 use std::error;
 
 use crate::app_settings::AppSettings;
+use crate::screen::Screen;
 use crate::state::game_setup::GameSetupState;
 use crate::state::settings::SettingsState;
 use crate::state::title::TitleState;
@@ -8,30 +9,22 @@ use crate::state::title::TitleState;
 /// Application result type.
 pub type AppResult<T> = Result<T, Box<dyn error::Error>>;
 
-#[derive(Debug)]
-pub enum GameState {
-    Title = 0,
-    GameSetup = 1,
-    Game = 2,
-    Manual = 3,
-    Settings = 4,
-}
 
 #[derive(Debug)]
-pub struct App<'a> {
-    pub game_state: GameState,
+pub struct App {
+    pub screen: Screen,
     pub running: bool,
     pub settings: AppSettings,
 
     pub title_state: TitleState,
     pub settings_state: SettingsState,
-    pub game_setup_state: GameSetupState<'a>,
+    pub game_setup_state: GameSetupState,
 }
 
-impl Default for App<'_> {
+impl Default for App {
     fn default() -> Self {
         Self {
-            game_state: GameState::Title,
+            screen: Screen::Title,
             running: true,
             settings: AppSettings::initialize(),
             title_state: TitleState::default(),
@@ -41,7 +34,7 @@ impl Default for App<'_> {
     }
 }
 
-impl App<'_> {
+impl App {
     pub fn new() -> Self {
         Self::default()
     }
@@ -55,7 +48,7 @@ impl App<'_> {
         self.running = false;
     }
 
-    pub fn change_game_state(&mut self, state: GameState) {
-        self.game_state = state;
+    pub fn change_screen(&mut self, screen: Screen) {
+        self.screen = screen;
     }
 }

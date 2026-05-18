@@ -10,11 +10,10 @@ pub mod ui;
 /// Terminal user interface.
 pub mod tui;
 
-/// Event handler.
-pub mod handler;
-
 pub mod state;
 
 pub mod app_settings;
 
 pub mod util;
+
+pub mod screen;

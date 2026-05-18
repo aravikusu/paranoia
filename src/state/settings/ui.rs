@@ -5,7 +5,7 @@ use crate::app::App;
 use crate::app_settings::AppTheme;
 use crate::util::menu_header;
 
-pub fn instructions<'a>(app: &'a App<'a>) -> Line<'a> {
+pub fn instructions(app: &App) -> Line<'static> {
     Line::from(vec![
         " toggle ".into(),
         "<ENTER> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),

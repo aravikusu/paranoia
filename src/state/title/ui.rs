@@ -13,7 +13,7 @@ const LOGO: &str = "_________                                         .__    ___
 -a text adventure by aravix-
 ";
 
-pub fn instructions<'a>(app: &'a App<'a>) -> Line<'a> {
+pub fn instructions(app: &App) -> Line<'static> {
     Line::from(vec![
         " select ".into(),
         "<ENTER> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),

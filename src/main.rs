@@ -1,6 +1,5 @@
 use paranoia::app::{App, AppResult};
 use paranoia::event::{Event, EventHandler};
-use paranoia::handler::handle_key_events;
 use paranoia::tui::Tui;
 use std::io;
 use ratatui::backend::CrosstermBackend;
@@ -24,7 +23,7 @@ fn main() -> AppResult<()> {
         // Handle events.
         match tui.events.next()? {
             Event::Tick => app.tick(),
-            Event::Key(key_event) => handle_key_events(key_event, &mut app)?,
+            Event::Key(key_event) => app.screen.handle_input(key_event, &mut app),
             Event::Mouse(_) => {}
             Event::Resize(_, _) => {}
         }

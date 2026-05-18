@@ -1,6 +1,6 @@
 use crossterm::event::{KeyCode, KeyEvent};
 
-use crate::app::{App, GameState};
+use crate::{app::App, screen::Screen};
 
 pub fn handle_input(key_event: KeyEvent, app: &mut App) {
     if app.game_setup_state.editing_name {
@@ -8,9 +8,13 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
             KeyCode::Enter | KeyCode::Esc => {
                 app.game_setup_state.toggle_edit();
             },
-            _ => {
-                app.game_setup_state.name_input.input(key_event);
+            KeyCode::Char(c) => {
+                app.game_setup_state.name.push(c);
             },
+            KeyCode::Backspace => {
+                app.game_setup_state.name.pop();
+            },
+            _ => {}
         }
     } else {
         match (key_event.code, app.game_setup_state.menu_idx) {
@@ -24,7 +28,7 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
                 app.game_setup_state.increment_menu_idx();
             }
             (KeyCode::Esc | KeyCode::Backspace, _) => {
-                app.change_game_state(GameState::Title);
+                app.change_screen(Screen::Title);
             }
             (KeyCode::Char('a') | KeyCode::Char('A') | KeyCode::Left, 1) => {
                 app.game_setup_state.decrement_paranoia_level();

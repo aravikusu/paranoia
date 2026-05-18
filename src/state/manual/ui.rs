@@ -27,7 +27,7 @@ The bee, of course, flies anyway
 because bees don't care
 what humans think is impossible.";
 
-pub fn instructions<'a>(app: &'a App<'a>) -> Line<'a> {
+pub fn instructions(app: &App) -> Line<'static> {
     Line::from(vec![
         " change page ".into(),
         "<WASD/ARROW KEYS> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),

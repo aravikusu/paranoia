@@ -1,6 +1,6 @@
 use crossterm::event::{KeyCode, KeyEvent};
 
-use crate::app::{App, GameState};
+use crate::{app::App, screen::Screen};
 
 pub fn handle_input(key_event: KeyEvent, app: &mut App) {
     match key_event.code {
@@ -13,9 +13,9 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
         }
         KeyCode::Enter => {
             match app.title_state.menu_idx {
-                0 => app.change_game_state(GameState::GameSetup),
-                1 => app.change_game_state(GameState::Settings),
-                2 => app.change_game_state(GameState::Manual),
+                0 => app.change_screen(Screen::GameSetup),
+                1 => app.change_screen(Screen::Settings),
+                2 => app.change_screen(Screen::Manual),
                 _ => app.quit()
             }
         }

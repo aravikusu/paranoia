@@ -8,7 +8,7 @@ use crate::app::App;
 use crate::app_settings::AppTheme;
 use crate::util::{block_preset, menu_header};
 
-pub fn instructions<'a>(app: &'a App<'a>) -> Line<'a> {
+pub fn instructions(app: &App) -> Line<'static> {
     match app.game_setup_state.menu_idx {
         0 | 2 | 3 => {
             Line::from(vec![
@@ -81,7 +81,7 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: [Rect; 1]) {
     let name_block = block_preset("name".into());
     frame.render_widget(
         menu_block_text(
-            app.game_setup_state.name_input.lines()[0].as_str().into(),
+            app.game_setup_state.name.clone(),
             app,
             0,
         ).block(name_block), settings_layout[0]);

@@ -1,6 +1,6 @@
 use crossterm::event::{KeyCode, KeyEvent};
 
-use crate::app::{App, GameState};
+use crate::{app::App, screen::Screen};
 
 pub fn handle_input(key_event: KeyEvent, app: &mut App) {
     match key_event.code {
@@ -12,7 +12,7 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
             //app.settings_state.increment_menu_idx();
         }
         KeyCode::Esc | KeyCode::Backspace => {
-            app.change_game_state(GameState::Title);
+            app.change_screen(Screen::Title);
         }
         _ => {}
     }
