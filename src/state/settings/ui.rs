@@ -1,20 +1,19 @@
 use ratatui::prelude::*;
 use ratatui::widgets::{Block, Borders, HighlightSpacing, List, ListDirection, ListItem, ListState};
-use ratatui::widgets::block::{Position, Title};
-
+use ratatui::style::Styled;
 use crate::app::App;
 use crate::app_settings::AppTheme;
 use crate::util::menu_header;
 
-pub fn instructions(app: &App) -> Title<'static> {
-    Title::from(Line::from(vec![
+pub fn instructions<'a>(app: &'a App<'a>) -> Line<'a> {
+    Line::from(vec![
         " toggle ".into(),
         "<ENTER> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
         " navigate ".into(),
         "<WASD/ARROW KEYS> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
         " go back ".into(),
         "<ESC/BACKSPACE> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
-    ]))
+    ])
 }
 
 pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {
@@ -47,16 +46,12 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {
         ])
         .split(inner[3]);
 
-    let page = Title::from(Line::from(vec![format!("page {}/1", &app.settings_state.page_idx).into()]));
+    let page = Line::from(vec![format!("page {}/1", &app.settings_state.page_idx).into()]);
     let page_name = get_page_name(&app.settings_state.page_idx);
 
     let list_block = Block::default()
         .title(page_name)
-        .title(
-            page
-                .alignment(Alignment::Right)
-                .position(Position::Bottom),
-        )
+        .title_bottom(page.right_aligned())
         .title_alignment(Alignment::Left)
         .borders(Borders::ALL)
         .border_style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)));
@@ -93,9 +88,9 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {
         &mut ListState::default().with_selected(Some(app.settings_state.menu_idx)));
 }
 
-fn get_page_name(idx: &usize) -> Title {
+fn get_page_name(idx: &usize) -> Line<'_> {
     match idx {
-        1 => Title::from("themes"),
-        _ => Title::from("themes"),
+        1 => Line::from("themes"),
+        _ => Line::from("themes"),
     }
 }

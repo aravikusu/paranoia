@@ -1,6 +1,6 @@
 use ratatui::prelude::*;
 use ratatui::widgets::{Block, Borders, HighlightSpacing, List, ListDirection, ListItem, ListState, Paragraph};
-use ratatui::widgets::block::Title;
+use ratatui::style::Styled;
 use crate::app::App;
 use crate::app_settings::AppTheme;
 
@@ -13,13 +13,13 @@ const LOGO: &str = "_________                                         .__    ___
 -a text adventure by aravix-
 ";
 
-pub fn instructions(app: &App) -> Title<'static> {
-    Title::from(Line::from(vec![
+pub fn instructions<'a>(app: &'a App<'a>) -> Line<'a> {
+    Line::from(vec![
         " select ".into(),
         "<ENTER> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
         " navigate ".into(),
         "<WASD/ARROW KEYS> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
-    ]))
+    ])
 }
 
 pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {

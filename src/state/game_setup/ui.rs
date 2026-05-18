@@ -1,34 +1,33 @@
 use ratatui::Frame;
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
-use ratatui::prelude::{Alignment, Line, Styled, Stylize};
-use ratatui::style::Style;
-use ratatui::widgets::block::{Position, Title};
+use ratatui::prelude::{Alignment, Line, Stylize};
+use ratatui::style::{Style, Styled};
 use ratatui::widgets::Paragraph;
 
 use crate::app::App;
 use crate::app_settings::AppTheme;
 use crate::util::{block_preset, menu_header};
 
-pub fn instructions(app: &App) -> Title<'static> {
+pub fn instructions<'a>(app: &'a App<'a>) -> Line<'a> {
     match app.game_setup_state.menu_idx {
         0 | 2 | 3 => {
-            Title::from(Line::from(vec![
+            Line::from(vec![
                 " navigate ".into(),
                 "<W/A/UP/DOWN> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
                 if app.game_setup_state.editing_name { " deselect ".into() } else { " select ".into() },
                 "<ENTER> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
                 if app.game_setup_state.editing_name { " deselect ".into() } else { " go back ".into() },
                 "<ESC> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
-            ]))
+            ])
         }
-        _ => Title::from(Line::from(vec![
+        _ => Line::from(vec![
             " navigate ".into(),
             "<W/A/UP/DOWN> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
             " increment/decrement ".into(),
             "<A/D/LEFT/RIGHT> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
             " go back ".into(),
             "<ESC> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
-        ]))
+        ])
     }
 }
 
@@ -88,11 +87,7 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_block: [Rect; 1]) {
         ).block(name_block), settings_layout[0]);
 
     let paranoia_block = block_preset("paranoia level".into())
-        .title(
-            Title::from("0")
-                .alignment(Alignment::Right)
-                .position(Position::Bottom),
-        );
+        .title_bottom(Line::from(app.game_setup_state.paranoia.to_string()).right_aligned());
 
     frame.render_widget(
         menu_block_text(

@@ -1,9 +1,9 @@
 use ratatui::Frame;
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
-use ratatui::prelude::{Alignment, Line, Styled, Stylize};
-use ratatui::style::Style;
+use ratatui::prelude::{Alignment, Line, Stylize};
+use ratatui::style::{Style, Styled};
 use ratatui::widgets::{Block, Borders, BorderType, Paragraph};
-use ratatui::widgets::block::{Position, Title};
+use ratatui::widgets::TitlePosition;
 
 use crate::app::App;
 use crate::app_settings::AppTheme;
@@ -27,13 +27,13 @@ The bee, of course, flies anyway
 because bees don't care
 what humans think is impossible.";
 
-pub fn instructions(app: &App) -> Title<'static> {
-    Title::from(Line::from(vec![
+pub fn instructions<'a>(app: &'a App<'a>) -> Line<'a> {
+    Line::from(vec![
         " change page ".into(),
         "<WASD/ARROW KEYS> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
         " go back ".into(),
         "<ESC/BACKSPACE> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
-    ]))
+    ])
 }
 
 pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect;1]) {
@@ -69,19 +69,15 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect;1]) {
         )
         .split(inner[3]);
 
-    let page = Title::from(Line::from(vec!["page 1/1".into()]));
+    let page = Line::from(vec!["page 1/1".into()]);
 
     let manual_block = Block::default()
         .borders(Borders::ALL)
         .border_type(BorderType::Rounded)
         .title("intro")
-        .title(
-            page
-                .alignment(Alignment::Right)
-                .position(Position::Bottom),
-        )
+        .title_bottom(page.right_aligned())
         .title_alignment(Alignment::Left)
-        .title_position(Position::Top);
+        .title_position(TitlePosition::Top);
 
     frame.render_widget(Paragraph::new(MANUAL_TEXT).alignment(Alignment::Center).block(manual_block.clone()), main_part[1]);
 }

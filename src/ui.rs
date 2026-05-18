@@ -5,8 +5,6 @@ use ratatui::{
 };
 use ratatui::layout::{Constraint, Direction, Layout};
 use ratatui::prelude::{Color, Rect, Style};
-use ratatui::widgets::block::Position;
-
 use crate::app::{App, GameState};
 use crate::app_settings::AppTheme;
 use crate::state::{manual, settings, title, game_setup};
@@ -31,11 +29,7 @@ pub fn render(app: &mut App, frame: &mut Frame) {
     // The main frame around the entire game.
     let main_frame_block = Block::bordered()
         .title("PARANOIA")
-        .title(
-            instructions
-                .alignment(Alignment::Center)
-                .position(Position::Bottom),
-        )
+        .title_bottom(instructions.centered())
         .title_alignment(Alignment::Center)
         .border_type(BorderType::Rounded)
         .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)).bg(Color::Black));
@@ -47,9 +41,9 @@ pub fn render(app: &mut App, frame: &mut Frame) {
                 Constraint::Fill(1)
             ]
         )
-        .areas(main_frame_block.inner(frame.size()));
+        .areas(main_frame_block.inner(frame.area()));
     
-    frame.render_widget(main_frame_block, frame.size());
+    frame.render_widget(main_frame_block, frame.area());
 
     // Whatever goes inside the main frame is decided by the game state.
     match app.game_state {

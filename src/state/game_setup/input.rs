@@ -28,6 +28,16 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
             KeyCode::Esc | KeyCode::Backspace => {
                 app.change_game_state(GameState::Title);
             }
+            KeyCode::Char('a') | KeyCode::Char('A') | KeyCode::Left => {
+                if app.game_setup_state.menu_idx == 1 {
+                    app.game_setup_state.decrement_paranoia_level();
+                } 
+            }
+            KeyCode::Char('d') | KeyCode::Char('D') | KeyCode::Right => {
+                if app.game_setup_state.menu_idx == 1 {
+                    app.game_setup_state.increment_paranoia_level();
+                }
+            }
             _ => {}
         }
     }

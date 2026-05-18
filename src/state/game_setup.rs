@@ -1,4 +1,6 @@
-use tui_textarea::TextArea;
+use std::cmp;
+
+use ratatui_textarea::TextArea;
 
 pub mod input;
 pub mod ui;
@@ -33,5 +35,12 @@ impl GameSetupState<'_> {
         } else {
             self.menu_idx -= 1
         }
+    }
+
+    pub fn increment_paranoia_level(&mut self) {
+        self.paranoia = cmp::min(100, self.paranoia + 5);
+    }
+    pub fn decrement_paranoia_level(&mut self) {
+        self.paranoia = cmp::max(0, self.paranoia - 5);
     }
 }

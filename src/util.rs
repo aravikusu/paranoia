@@ -1,6 +1,6 @@
 use ratatui::prelude::*;
 use ratatui::widgets::{Block, Borders, BorderType, Paragraph};
-use ratatui::widgets::block::Position;
+use ratatui::widgets::TitlePosition;
 
 /// The general outlined Block used everywhere.
 pub fn block_preset<'a>(title: String) -> Block<'a> {
@@ -9,7 +9,7 @@ pub fn block_preset<'a>(title: String) -> Block<'a> {
         .border_type(BorderType::Rounded)
         .title(title)
         .title_alignment(Alignment::Left)
-        .title_position(Position::Top)
+        .title_position(TitlePosition::Top)
 }
 
 pub fn menu_header(lines: Vec<Line>, color: Color) -> Paragraph {
