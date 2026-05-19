@@ -26,7 +26,7 @@ impl Default for App {
         Self {
             screen: Screen::Title,
             running: true,
-            settings: AppSettings::initialize(),
+            settings: AppSettings::default(),
             title_state: TitleState::default(),
             settings_state: SettingsState::default(),
             game_setup_state: GameSetupState::default(),
@@ -36,7 +36,9 @@ impl Default for App {
 
 impl App {
     pub fn new() -> Self {
-        Self::default()
+        let mut s = Self::default();
+        s.settings = AppSettings::initialize();
+        s
     }
 
     /// Handles the tick event of the terminal.

@@ -2,7 +2,6 @@ use ratatui::prelude::*;
 use ratatui::widgets::{Block, Borders, ListItem, ListState, Paragraph};
 use ratatui::style::Styled;
 use crate::app::App;
-use crate::app_settings::AppTheme;
 use crate::util;
 
 const LOGO: &str = "_________                                         .__    _____
@@ -17,13 +16,13 @@ const LOGO: &str = "_________                                         .__    ___
 pub fn instructions(app: &App) -> Line<'static> {
     Line::from(vec![
         " select ".into(),
-        "<ENTER> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
+        "<ENTER> ".set_style(Style::default().fg(app.settings.theme.highlight_color())).bold(),
         " navigate ".into(),
-        "<WASD/ARROW KEYS> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
+        "<WASD/ARROW KEYS> ".set_style(Style::default().fg(app.settings.theme.highlight_color())).bold(),
     ])
 }
 
-pub fn layout(app: &App, frame: &mut Frame, main_layout: [Rect; 1]) {
+pub fn layout(app: &App, frame: &mut Frame, main_layout: Rect) {
     let inner = Layout::default()
         .direction(Direction::Vertical)
         .constraints(
@@ -34,13 +33,13 @@ pub fn layout(app: &App, frame: &mut Frame, main_layout: [Rect; 1]) {
                 Constraint::Percentage(35)
             ]
         )
-        .split(main_layout[0]);
+        .split(main_layout);
 
 
     frame.render_widget(
         Paragraph::new(LOGO)
             .block(Block::new().borders(Borders::empty()))
-            .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
+            .style(Style::default().fg(app.settings.theme.fg_color()))
             .centered(),
         inner[1],
     );
@@ -66,7 +65,7 @@ pub fn layout(app: &App, frame: &mut Frame, main_layout: [Rect; 1]) {
     let block = Block::default()
         .title("main menu")
         .borders(Borders::ALL)
-        .border_style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)));
+        .border_style(Style::default().fg(app.settings.theme.fg_color()));
     let options = util::list_preset(items, block, app.settings.theme);
     
     frame.render_stateful_widget(

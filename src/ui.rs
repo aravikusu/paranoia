@@ -3,10 +3,8 @@ use ratatui::{
     layout::Alignment,
     widgets::{Block, BorderType},
 };
-use ratatui::layout::{Constraint, Direction, Layout};
-use ratatui::prelude::{Color, Rect, Style};
+use ratatui::prelude::{Color, Style};
 use crate::app::App;
-use crate::app_settings::AppTheme;
 
 /// Renders the user interface widgets.
 pub fn render(app: &mut App, frame: &mut Frame) {
@@ -25,19 +23,11 @@ pub fn render(app: &mut App, frame: &mut Frame) {
         .title_bottom(instructions.centered())
         .title_alignment(Alignment::Center)
         .border_type(BorderType::Rounded)
-        .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)).bg(Color::Black));
+        .style(Style::default().fg(app.settings.theme.fg_color()).bg(Color::Black));
 
-    let main_layout: [Rect;1] = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints(
-            [
-                Constraint::Fill(1)
-            ]
-        )
-        .areas(main_frame_block.inner(frame.area()));
-    
+    let inner = main_frame_block.inner(frame.area());
     frame.render_widget(main_frame_block, frame.area());
 
     // Whatever goes inside the main frame is decided by the game state.
-    app.screen.render(app, frame, main_layout);
+    app.screen.render(app, frame, inner);
 }

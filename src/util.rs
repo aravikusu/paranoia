@@ -37,7 +37,7 @@ impl MenuCursor {
 }
 
 /// The general outlined Block used everywhere.
-pub fn block_preset<'a>(title: String) -> Block<'a> {
+pub fn block_preset<'a>(title: impl Into<Line<'a>>) -> Block<'a> {
     Block::default()
         .borders(Borders::ALL)
         .border_type(BorderType::Rounded)
@@ -46,7 +46,7 @@ pub fn block_preset<'a>(title: String) -> Block<'a> {
         .title_position(TitlePosition::Top)
 }
 
-pub fn menu_header(lines: Vec<Line>, color: Color) -> Paragraph {
+pub fn menu_header<'a>(lines: impl Into<Text<'a>>, color: Color) -> Paragraph<'a> {
     Paragraph::new(lines)
         .style(Style::default().fg(color))
         .alignment(Alignment::Center)
@@ -59,12 +59,12 @@ pub fn list_preset<'a>(
 ) -> List<'a> {
     List::new(items)
         .block(block)
-        .style(Style::default().fg(AppTheme::fg_color(&theme)))
+        .style(Style::default().fg(theme.fg_color()))
         .highlight_style(
             Style::default()
                 .add_modifier(Modifier::ITALIC)
                 .fg(Color::Black)
-                .bg(AppTheme::fg_color(&theme))
+                .bg(theme.fg_color())
         )
         .highlight_symbol(">>")
         .repeat_highlight_symbol(true)

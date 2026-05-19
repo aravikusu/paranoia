@@ -6,7 +6,6 @@ use ratatui::widgets::{Block, Borders, BorderType, Paragraph};
 use ratatui::widgets::TitlePosition;
 
 use crate::app::App;
-use crate::app_settings::AppTheme;
 use crate::util::menu_header;
 
 const MANUAL_TEXT: &str = "According to all known laws
@@ -30,13 +29,13 @@ what humans think is impossible.";
 pub fn instructions(app: &App) -> Line<'static> {
     Line::from(vec![
         " change page ".into(),
-        "<WASD/ARROW KEYS> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
+        "<WASD/ARROW KEYS> ".set_style(Style::default().fg(app.settings.theme.highlight_color())).bold(),
         " go back ".into(),
-        "<ESC/BACKSPACE> ".set_style(Style::default().fg(AppTheme::highlight_color(&app.settings.theme))).bold(),
+        "<ESC/BACKSPACE> ".set_style(Style::default().fg(app.settings.theme.highlight_color())).bold(),
     ])
 }
 
-pub fn layout(app: &App, frame: &mut Frame, main_layout: [Rect;1]) {
+pub fn layout(app: &App, frame: &mut Frame, main_layout: Rect) {
     let inner = Layout::default()
         .direction(Direction::Vertical)
         .constraints(
@@ -48,14 +47,14 @@ pub fn layout(app: &App, frame: &mut Frame, main_layout: [Rect;1]) {
                 Constraint::Percentage(5),
             ]
         )
-        .split(main_layout[0]);
+        .split(main_layout);
 
     let header = vec![
         "-paranoia manual-".bold().into(),
         "this is the manual for paranoia. read about the what's, the how's, and the why's here.".italic().into(),
     ];
     frame.render_widget(
-        menu_header(header, AppTheme::fg_color(&app.settings.theme)),
+        menu_header(header, app.settings.theme.fg_color()),
         inner[1]);
 
     let main_part = Layout::default()

@@ -37,8 +37,8 @@ pub enum AppTheme {
 }
 
 impl AppTheme {
-    pub fn fg_color(theme: &AppTheme) -> Color {
-        match theme {
+    pub fn fg_color(self) -> Color {
+        match self {
             AppTheme::Default => Color::LightYellow,
             AppTheme::Vaporwave => Color::LightMagenta,
             AppTheme::Piccolo => Color::Green,
@@ -46,8 +46,8 @@ impl AppTheme {
         }
     }
 
-    pub fn highlight_color(theme: &AppTheme) -> Color {
-        match theme {
+    pub fn highlight_color(self) -> Color {
+        match self {
             AppTheme::Default => Color::LightRed,
             AppTheme::Vaporwave => Color::LightCyan,
             AppTheme::Piccolo => Color::Magenta,

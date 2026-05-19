@@ -5,7 +5,7 @@ use crate::app_settings::AppTheme;
 use crate::screen::Screen;
 
 pub fn handle_input(key_event: KeyEvent, app: &mut App) {
-    match (key_event.code, app.settings_state.page_idx) {
+    match (key_event.code, app.settings_state.page_cursor.selected()) {
         // Exit application on `Ctrl-C`
         (KeyCode::Char('w') | KeyCode::Char('W') | KeyCode::Up, _) => {
             app.settings_state.cursor.prev();
