@@ -1,6 +1,7 @@
 use paranoia::app::{App, AppResult};
 use paranoia::event::{Event, EventHandler};
 use paranoia::tui::Tui;
+use crossterm::event::{KeyCode, KeyModifiers};
 use std::io;
 use ratatui::backend::CrosstermBackend;
 use ratatui::Terminal;
@@ -23,7 +24,13 @@ fn main() -> AppResult<()> {
         // Handle events.
         match tui.events.next()? {
             Event::Tick => app.tick(),
-            Event::Key(key_event) => app.screen.handle_input(key_event, &mut app),
+            Event::Key(key_event) => {
+                if key_event.code == KeyCode::Char('c') && key_event.modifiers.contains(KeyModifiers::CONTROL) {
+                    app.quit();
+                } else {
+                    app.screen.handle_input(key_event, &mut app);
+                }
+            }
             Event::Mouse(_) => {}
             Event::Resize(_, _) => {}
         }

@@ -1,11 +1,12 @@
 use ratatui::Frame;
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::prelude::{Alignment, Line, Stylize};
-use ratatui::style::{Style, Styled};
-use ratatui::widgets::Paragraph;
+use ratatui::style::{Color, Style, Styled};
+use ratatui::text::Text;
+use ratatui::widgets::{Clear, Gauge, ListItem, ListState, Paragraph};
 
 use crate::app::App;
-use crate::util::{block_preset, menu_header};
+use crate::util::{block_preset, list_preset, menu_header};
 
 pub fn instructions(app: &App) -> Line<'static> {
     match app.game_setup_state.cursor.selected() {
@@ -87,18 +88,28 @@ pub fn layout(app: &App, frame: &mut Frame, main_block: Rect) {
 
     let paranoia_block = block_preset("paranoia level")
         .title_bottom(Line::from(app.game_setup_state.paranoia.to_string()).right_aligned());
-
-    let paranoia = app.game_setup_state.paranoia.clamp(0, 100) as usize;
-    let bar_width = 28;
-    let filled = (paranoia * bar_width) / 100;
-    let bar = "█".repeat(filled) + &"░".repeat(bar_width - filled);
-
-    frame.render_widget(
-        menu_block_text(
-            bar,
-            app,
-            1,
-        ).block(paranoia_block), settings_layout[1]);
+    
+    let paranoia = app.game_setup_state.paranoia.clamp(0, 100) as u16;
+    let guage = Gauge::default()
+        .block(paranoia_block)
+        .style(
+            if app.game_setup_state.cursor.selected() == 1 {
+                Style::default().bg(app.settings.theme.fg_color()).fg(Color::Black)
+            } else {
+                Style::default()
+            }
+        )
+        .gauge_style(
+            if app.game_setup_state.cursor.selected() == 1 {
+                Style::default().bg(app.settings.theme.fg_color()).fg(Color::Black)
+            } else {
+                Style::default().fg(app.settings.theme.fg_color())
+            }
+        )
+        .label("")
+        .use_unicode(true)
+        .percent(paranoia);
+    frame.render_widget(guage, settings_layout[1]);
 
     let item_block = block_preset("start item");
     frame.render_widget(
@@ -118,6 +129,46 @@ pub fn layout(app: &App, frame: &mut Frame, main_block: Rect) {
 
     let info_block = block_preset("info box");
     frame.render_widget(info_block_text(app).alignment(Alignment::Center).block(info_block), inner[5]);
+
+    if app.game_setup_state.selecting_item || app.game_setup_state.selecting_perk {
+        let area = centered_rect(50, 60, main_block);
+        render_dialog(app, frame, area);
+    }
+}
+
+fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
+    let popup_layout = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints([
+            Constraint::Percentage((100 - percent_y) / 2),
+            Constraint::Percentage(percent_y),
+            Constraint::Percentage((100 - percent_y) / 2),
+        ])
+        .split(r);
+
+    Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([
+            Constraint::Percentage((100 - percent_x) / 2),
+            Constraint::Percentage(percent_x),
+            Constraint::Percentage((100 - percent_x) / 2),
+        ])
+        .split(popup_layout[1])[1]
+}
+
+fn render_dialog(app: &App, frame: &mut Frame, area: Rect) {
+    frame.render_widget(Clear, area);
+    let block = block_preset("select starting item");
+    let items = [
+        ListItem::new(Text::from("energy_drink").alignment(Alignment::Center)),
+        ListItem::new(Text::from("cute charm").alignment(Alignment::Center)),
+    ];
+    let list = list_preset(items, block, app.settings.theme);
+    frame.render_stateful_widget(
+        list,
+        area,
+        &mut ListState::default().with_selected(Some(app.game_setup_state.submenu_cursor.selected())),
+    );
 }
 
 fn menu_block_text<'a>(text: String, app: &App, menu_idx: usize) -> Paragraph<'a> {

@@ -19,6 +19,10 @@ impl MenuCursor {
         }
     }
 
+    pub fn update_len(&mut self, len: usize) {
+        self.len = len;
+    }
+
     pub fn next(&mut self) {
         self.idx = (self.idx + 1) % self.len;
     }

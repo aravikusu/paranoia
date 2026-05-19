@@ -9,8 +9,9 @@ pub mod ui;
 pub struct GameSetupState {
     pub cursor: MenuCursor,
     pub editing_name: bool,
-    pub item_list_idx: usize,
-
+    pub selecting_item: bool,
+    pub selecting_perk: bool,
+    pub submenu_cursor: MenuCursor,
     pub name: String,
     pub paranoia: i32,
     pub starting_item: String,
@@ -21,8 +22,10 @@ impl Default for GameSetupState {
         Self {
             cursor: MenuCursor::new(4),
             editing_name: false,
-            item_list_idx: 0,
+            selecting_item: false,
+            selecting_perk: false,
             name: String::new(),
+            submenu_cursor: MenuCursor::new(0),
             paranoia: 0,
             starting_item: String::new(),
         }
@@ -32,6 +35,13 @@ impl Default for GameSetupState {
 impl GameSetupState {
     pub fn toggle_edit(&mut self) {
         self.editing_name = !self.editing_name;
+    }
+    pub fn toggle_item(&mut self) {
+        self.selecting_item = !self.selecting_item;
+    }
+
+    pub fn toggle_perk(&mut self) {
+        self.selecting_perk = !self.selecting_perk;
     }
 
     pub fn increment_paranoia_level(&mut self) {

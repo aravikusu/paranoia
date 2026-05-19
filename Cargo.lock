@@ -741,6 +741,7 @@ dependencies = [
  "crossterm",
  "ratatui",
  "ratatui-textarea",
+ "ratatui-widgets",
  "serde",
  "toml",
 ]
