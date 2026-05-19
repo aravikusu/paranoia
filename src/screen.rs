@@ -23,7 +23,7 @@ impl Screen {
         }
     }
 
-    pub fn render(self, app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {
+    pub fn render(self, app: &App, frame: &mut Frame, main_layout: [Rect; 1]) {
         match self {
             Screen::Title => title::ui::layout(app, frame, main_layout),
             Screen::GameSetup => game_setup::ui::layout(app, frame, main_layout),

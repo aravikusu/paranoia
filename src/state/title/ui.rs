@@ -1,8 +1,9 @@
 use ratatui::prelude::*;
-use ratatui::widgets::{Block, Borders, HighlightSpacing, List, ListDirection, ListItem, ListState, Paragraph};
+use ratatui::widgets::{Block, Borders, ListItem, ListState, Paragraph};
 use ratatui::style::Styled;
 use crate::app::App;
 use crate::app_settings::AppTheme;
+use crate::util;
 
 const LOGO: &str = "_________                                         .__    _____
 \\______   \\_____   _______ _____     ____    ____  |__|  /  _  \\
@@ -22,7 +23,7 @@ pub fn instructions(app: &App) -> Line<'static> {
     ])
 }
 
-pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {
+pub fn layout(app: &App, frame: &mut Frame, main_layout: [Rect; 1]) {
     let inner = Layout::default()
         .direction(Direction::Vertical)
         .constraints(
@@ -61,28 +62,16 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {
         ListItem::new(Text::from("manual").alignment(Alignment::Center)),
         ListItem::new(Text::from("quit").alignment(Alignment::Center)),
     ];
-    let options = List::new(items)
-        .block(
-            Block::default()
-                .title("main menu")
-                .borders(Borders::ALL)
-                .border_style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
-        )
-        .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
-        .highlight_style(
-            Style::default()
-                .add_modifier(Modifier::ITALIC)
-                .fg(Color::Black)
-                .bg(AppTheme::fg_color(&app.settings.theme))
-        )
-        .highlight_symbol(">>")
-        .repeat_highlight_symbol(true)
-        .highlight_spacing(HighlightSpacing::Always)
-        .direction(ListDirection::TopToBottom);
+
+    let block = Block::default()
+        .title("main menu")
+        .borders(Borders::ALL)
+        .border_style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)));
+    let options = util::list_preset(items, block, app.settings.theme);
     
     frame.render_stateful_widget(
         options,
         menu_layout[1],
-        &mut ListState::default().with_selected(Some(app.title_state.menu_idx)));
+        &mut ListState::default().with_selected(Some(app.title_state.cursor.selected())));
     //frame.render_widget(options, inner[2]);
 }

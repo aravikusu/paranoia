@@ -36,7 +36,7 @@ pub fn instructions(app: &App) -> Line<'static> {
     ])
 }
 
-pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect;1]) {
+pub fn layout(app: &App, frame: &mut Frame, main_layout: [Rect;1]) {
     let inner = Layout::default()
         .direction(Direction::Vertical)
         .constraints(

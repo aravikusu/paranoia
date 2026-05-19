@@ -1,11 +1,13 @@
 use std::cmp;
 
+use crate::util::MenuCursor;
+
 pub mod input;
 pub mod ui;
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct GameSetupState {
-    pub menu_idx: usize,
+    pub cursor: MenuCursor,
     pub editing_name: bool,
     pub item_list_idx: usize,
 
@@ -14,25 +16,22 @@ pub struct GameSetupState {
     pub starting_item: String,
 }
 
+impl Default for GameSetupState {
+    fn default() -> Self {
+        Self {
+            cursor: MenuCursor::new(4),
+            editing_name: false,
+            item_list_idx: 0,
+            name: String::new(),
+            paranoia: 0,
+            starting_item: String::new(),
+        }
+    }
+}
+
 impl GameSetupState {
     pub fn toggle_edit(&mut self) {
         self.editing_name = !self.editing_name;
-    }
-
-    pub fn increment_menu_idx(&mut self) {
-        if self.menu_idx == 3 {
-            self.menu_idx = 0
-        } else {
-            self.menu_idx += 1
-        }
-    }
-
-    pub fn decrement_menu_idx(&mut self) {
-        if self.menu_idx == 0 {
-            self.menu_idx = 3
-        } else {
-            self.menu_idx -= 1
-        }
     }
 
     pub fn increment_paranoia_level(&mut self) {

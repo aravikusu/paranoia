@@ -1,9 +1,9 @@
 use ratatui::prelude::*;
-use ratatui::widgets::{Block, Borders, HighlightSpacing, List, ListDirection, ListItem, ListState};
+use ratatui::widgets::{Block, Borders, ListItem, ListState};
 use ratatui::style::Styled;
 use crate::app::App;
 use crate::app_settings::AppTheme;
-use crate::util::menu_header;
+use crate::util::{self, menu_header};
 
 pub fn instructions(app: &App) -> Line<'static> {
     Line::from(vec![
@@ -16,7 +16,7 @@ pub fn instructions(app: &App) -> Line<'static> {
     ])
 }
 
-pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {
+pub fn layout(app: &App, frame: &mut Frame, main_layout: [Rect; 1]) {
     let inner = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
@@ -68,24 +68,12 @@ pub fn layout(app: &mut App, frame: &mut Frame, main_layout: [Rect; 1]) {
         _ => page1items
     };
 
-    let settings = List::new(items)
-        .block(list_block)
-        .style(Style::default().fg(AppTheme::fg_color(&app.settings.theme)))
-        .highlight_style(
-            Style::default()
-                .add_modifier(Modifier::ITALIC)
-                .fg(Color::Black)
-                .bg(AppTheme::fg_color(&app.settings.theme))
-        )
-        .highlight_symbol(">>")
-        .repeat_highlight_symbol(true)
-        .highlight_spacing(HighlightSpacing::Always)
-        .direction(ListDirection::TopToBottom);
+    let settings = util::list_preset(items, list_block, app.settings.theme);
 
     frame.render_stateful_widget(
         settings,
         main_part[1],
-        &mut ListState::default().with_selected(Some(app.settings_state.menu_idx)));
+        &mut ListState::default().with_selected(Some(app.settings_state.cursor.selected())));
 }
 
 fn get_page_name(idx: &usize) -> Line<'_> {

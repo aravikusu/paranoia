@@ -30,10 +30,10 @@ pub struct SettingsToml {
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub enum AppTheme {
-    Default = 0,
-    Vaporwave = 1,
-    Piccolo = 2,
-    Monochrome = 3,
+    Default,
+    Vaporwave,
+    Piccolo,
+    Monochrome,
 }
 
 impl AppTheme {

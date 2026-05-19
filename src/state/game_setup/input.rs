@@ -17,15 +17,15 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
             _ => {}
         }
     } else {
-        match (key_event.code, app.game_setup_state.menu_idx) {
+        match (key_event.code, app.game_setup_state.cursor.selected()) {
             (KeyCode::Enter, 0) => {
                 app.game_setup_state.toggle_edit();
             }
             (KeyCode::Char('w') | KeyCode::Char('W') | KeyCode::Up, _) => {
-                app.game_setup_state.decrement_menu_idx();
+                app.game_setup_state.cursor.prev();
             }
             (KeyCode::Char('s') | KeyCode::Char('S') | KeyCode::Down, _) => {
-                app.game_setup_state.increment_menu_idx();
+                app.game_setup_state.cursor.next();
             }
             (KeyCode::Esc | KeyCode::Backspace, _) => {
                 app.change_screen(Screen::Title);

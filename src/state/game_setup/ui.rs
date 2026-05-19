@@ -9,7 +9,7 @@ use crate::app_settings::AppTheme;
 use crate::util::{block_preset, menu_header};
 
 pub fn instructions(app: &App) -> Line<'static> {
-    match app.game_setup_state.menu_idx {
+    match app.game_setup_state.cursor.selected() {
         0 | 2 | 3 => {
             Line::from(vec![
                 " navigate ".into(),
@@ -31,7 +31,7 @@ pub fn instructions(app: &App) -> Line<'static> {
     }
 }
 
-pub fn layout(app: &mut App, frame: &mut Frame, main_block: [Rect; 1]) {
+pub fn layout(app: &App, frame: &mut Frame, main_block: [Rect; 1]) {
     let inner = Layout::default()
         .direction(Direction::Vertical)
         .constraints(
@@ -125,7 +125,7 @@ fn menu_block_text<'a>(text: String, app: &App, menu_idx: usize) -> Paragraph<'a
     let mut paragraph = Paragraph::new(text)
         .alignment(Alignment::Left);
 
-    if app.game_setup_state.menu_idx == menu_idx {
+    if app.game_setup_state.cursor.selected() == menu_idx {
         paragraph = paragraph
             .style(Style::default().bg(
                 if app.game_setup_state.editing_name { AppTheme::highlight_color(&app.settings.theme) } else { AppTheme::fg_color(&app.settings.theme) }
@@ -136,7 +136,7 @@ fn menu_block_text<'a>(text: String, app: &App, menu_idx: usize) -> Paragraph<'a
 }
 
 fn info_block_text<'a>(app: &App) -> Paragraph<'a> {
-    let text = match app.game_setup_state.menu_idx {
+    let text = match app.game_setup_state.cursor.selected() {
         0 => "your... name. what everyone will refer to you as\nyou know... a name..".to_string(),
         1 => {
             let mut thing = String::from("your starting paranoia level. a difficulty slider, essentially.\nread more about paranoia in the manual.");
