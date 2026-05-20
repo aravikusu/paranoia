@@ -2,11 +2,11 @@
     (
         key: "night_owl",
         name: "night owl",
-        description: "day life was never your thing. you see a +5 to all of your stats between 12AM-6AM, and receive the inverse between 6AM-12PM."
+        description: "day life was never your thing.\nyou see a +5 to all of your stats between 12AM-6AM, and receive the inverse between 6AM-12PM."
     ),
     (
         key: "prepper",
         name: "prepper",
-        description: "you've always been suspicious of the world, that something just ain't right. your MINIMUM paranoia becomes 20, but every day your fridge is stocked with a free meal."
+        description: "you've always been suspicious of the world, that something just ain't right.\nyour MINIMUM paranoia becomes 20, but every day your fridge is stocked with a free meal."
     ),
 ]

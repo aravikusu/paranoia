@@ -41,12 +41,14 @@ impl App {
     pub fn new() -> Self {
         let database = Database::load();
         let starting_items = database.get_starting_items();
+        let perks = database.get_perks();
 
         Self {
             settings: AppSettings::initialize(),
             database,
             game_setup_state: GameSetupState {
                 starting_items,
+                perks,
                 ..Default::default()
             },
             ..Default::default()

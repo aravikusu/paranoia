@@ -4,11 +4,16 @@ use crate::data::{item::Item, perk::Perk};
 
 const STARTING_ITEMS: &[&str] = &["ibuprofen", "makeshift_grenade"];
 
+pub trait Describable {
+    fn name(&self) -> &str;
+    fn description(&self) -> &str;
+}
+
 // Contains all of the data thingies.
 #[derive(Debug, Default)]
 pub struct Database {
-    pub items: HashMap<String, Item>,
-    pub perks: HashMap<String, Perk>,
+    items: HashMap<String, Item>,
+    perks: Vec<Perk>,
 }
 
 impl Database {
@@ -23,14 +28,9 @@ impl Database {
             .map(|item| (item.key.clone(), item))
             .collect();
 
-        let perks_vec: Vec<Perk> = ron::de::from_reader(
+        let perks: Vec<Perk> = ron::de::from_reader(
             File::open("assets/perks.ron").expect("Perks database not found")
         ).expect("Couldn't read perks database");
-        
-        let perks: HashMap<String, Perk> = perks_vec
-            .into_iter()
-            .map(|perk| (perk.key.clone(), perk))
-            .collect();
 
         Self {
             items,
@@ -43,5 +43,9 @@ impl Database {
         STARTING_ITEMS.iter()
             .filter_map(|&key| self.items.get(key).cloned())
             .collect()
+    }
+
+    pub fn get_perks(&self)-> Vec<Perk> {
+        self.perks.clone()
     }
 }

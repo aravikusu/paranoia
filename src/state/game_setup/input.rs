@@ -5,7 +5,15 @@ use crate::{app::App, screen::Screen};
 pub fn handle_input(key_event: KeyEvent, app: &mut App) {
     if app.game_setup_state.selecting_item || app.game_setup_state.selecting_perk {
         match key_event.code {
-            KeyCode::Enter | KeyCode::Esc => {
+            KeyCode::Enter => {
+                if app.game_setup_state.selecting_item {
+                    app.game_setup_state.set_item();
+                    app.game_setup_state.toggle_item();
+                } else {
+                    app.game_setup_state.toggle_perk();
+                }
+            }
+            KeyCode::Esc => {
                 if app.game_setup_state.selecting_item {
                     app.game_setup_state.toggle_item();
                 } else {
@@ -41,11 +49,11 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
             (KeyCode::Enter, 0) => {
                 app.game_setup_state.toggle_edit();
             }
-            (KeyCode::Enter, 2) => {
+            (KeyCode::Enter, 3) => {
                 app.game_setup_state.toggle_item();
                 app.game_setup_state.submenu_cursor.update_len(2);
             }
-            (KeyCode::Enter, 3) => {
+            (KeyCode::Enter, 4) => {
                 app.game_setup_state.toggle_perk();
                 app.game_setup_state.submenu_cursor.update_len(2);
             }

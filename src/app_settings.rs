@@ -28,7 +28,7 @@ pub struct SettingsToml {
     settings: AppSettings,
 }
 
-#[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+#[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialEq)]
 pub enum AppTheme {
     Default,
     Vaporwave,
@@ -52,6 +52,14 @@ impl AppTheme {
             AppTheme::Vaporwave => Color::LightCyan,
             AppTheme::Piccolo => Color::Magenta,
             AppTheme::Monochrome => Color::DarkGray,
+        }
+    }
+
+    pub fn disabled_color(self) -> Color {
+        if self == AppTheme::Monochrome {
+            return Color::DarkGray
+        } else {
+            return Color::Gray
         }
     }
 }
