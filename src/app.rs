@@ -1,6 +1,7 @@
 use std::error;
 
 use crate::app_settings::AppSettings;
+use crate::data::database::Database;
 use crate::screen::Screen;
 use crate::state::game_setup::GameSetupState;
 use crate::state::settings::SettingsState;
@@ -15,6 +16,7 @@ pub struct App {
     pub screen: Screen,
     pub running: bool,
     pub settings: AppSettings,
+    pub database: Database,
 
     pub title_state: TitleState,
     pub settings_state: SettingsState,
@@ -27,6 +29,7 @@ impl Default for App {
             screen: Screen::Title,
             running: true,
             settings: AppSettings::default(),
+            database: Database::default(),
             title_state: TitleState::default(),
             settings_state: SettingsState::default(),
             game_setup_state: GameSetupState::default(),
@@ -36,9 +39,18 @@ impl Default for App {
 
 impl App {
     pub fn new() -> Self {
-        let mut s = Self::default();
-        s.settings = AppSettings::initialize();
-        s
+        let database = Database::load();
+        let starting_items = database.get_starting_items();
+
+        Self {
+            settings: AppSettings::initialize(),
+            database,
+            game_setup_state: GameSetupState {
+                starting_items,
+                ..Default::default()
+            },
+            ..Default::default()
+        }
     }
 
     /// Handles the tick event of the terminal.

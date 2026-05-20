@@ -1,6 +1,6 @@
 use std::cmp;
 
-use crate::util::MenuCursor;
+use crate::{app::App, data::item::Item, util::MenuCursor};
 
 pub mod input;
 pub mod ui;
@@ -14,7 +14,7 @@ pub struct GameSetupState {
     pub submenu_cursor: MenuCursor,
     pub name: String,
     pub paranoia: i32,
-    pub starting_item: String,
+    pub starting_items: Vec<Item>
 }
 
 impl Default for GameSetupState {
@@ -27,12 +27,16 @@ impl Default for GameSetupState {
             name: String::new(),
             submenu_cursor: MenuCursor::new(0),
             paranoia: 0,
-            starting_item: String::new(),
+            starting_items: vec!(),
         }
     }
 }
 
 impl GameSetupState {
+    pub fn load(&mut self, app: &App) {
+        self.starting_items = app.database.get_starting_items();
+    }
+
     pub fn toggle_edit(&mut self) {
         self.editing_name = !self.editing_name;
     }

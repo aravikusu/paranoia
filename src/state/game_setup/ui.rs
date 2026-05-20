@@ -129,7 +129,7 @@ pub fn layout(app: &App, frame: &mut Frame, main_block: Rect) {
 
     let info_block = block_preset("info box");
     frame.render_widget(info_block_text(app).alignment(Alignment::Center).block(info_block), inner[5]);
-
+    
     if app.game_setup_state.selecting_item || app.game_setup_state.selecting_perk {
         let area = centered_rect(50, 60, main_block);
         render_dialog(app, frame, area);
@@ -159,10 +159,12 @@ fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
 fn render_dialog(app: &App, frame: &mut Frame, area: Rect) {
     frame.render_widget(Clear, area);
     let block = block_preset("select starting item");
-    let items = [
-        ListItem::new(Text::from("energy_drink").alignment(Alignment::Center)),
-        ListItem::new(Text::from("cute charm").alignment(Alignment::Center)),
-    ];
+    let things = app.database.get_starting_items();
+    let mut items = vec!();
+    for item in things {
+        items.push(ListItem::new(Text::from(item.name).alignment(Alignment::Center)))
+    }
+
     let list = list_preset(items, block, app.settings.theme);
     frame.render_stateful_widget(
         list,
@@ -189,14 +191,14 @@ fn info_block_text<'a>(app: &App) -> Paragraph<'a> {
     let text = match app.game_setup_state.cursor.selected() {
         0 => "your... name. what everyone will refer to you as\nyou know... a name..".to_string(),
         1 => {
-            let mut thing = String::from("your starting paranoia level. a difficulty slider, essentially.\nread more about paranoia in the manual.");
+            let mut thing = String::from("your starting paranoia level. the more of it you have, the more things may be off...");
             if app.game_setup_state.paranoia > 50 {
                 thing.push_str("\n\nWARNING: PARANOIA AT 50 ALREADY PUTS YOU AT DANGER FROM THE GET-GO. GOING ABOVE IT MEANS RISKING IMPOSSIBLE RUNS AND INSTANT DEATH.\nYOU HAVE BEEN WARNED.");
             }
             thing
         },
-        2 => "the item which you wanna start with.\nnote that the items can be found in-game. this is but an \"initial edge\".".to_string(),
-        3 => "the perk you wanna start with. a double-edged sword... it cannot be changed, so choose wisely.".to_string(),
+        2 => "the item which you wanna start with.\nnote that most of these items can be obtained in-game.".to_string(),
+        3 => "the perk you want to give your character. the perk you choose cannot be changed and greatly affects your playthrough.".to_string(),
         _ => "if you see this I screwed up. oops".to_string(),
     };
 

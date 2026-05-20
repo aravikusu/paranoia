@@ -12,3 +12,4 @@ serde = { version = "1.0.228", features = ["derive"] }
 toml = "1.1.2"
 ratatui-textarea = "0.9.1"
 ratatui-widgets = "0.3.0"
+ron = "0.12.1"

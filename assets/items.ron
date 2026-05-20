@@ -1,0 +1,12 @@
+[
+    (
+        key: "ibuprofen",
+        name: "ibuprofen",
+        description: "when shit hits the fan... just don't take too many"
+    ),
+    (
+        key: "makeshift_grenade",
+        name: "makeshift grenade",
+        description: "a 'grenade' cobbled together by hopes and dreams, and random parts from home.\nit has random wires and parts sticking out. this shit ain't safe, man."
+    ),
+]
