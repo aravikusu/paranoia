@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::data::database::Describable;
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Default, Debug, Deserialize, Serialize, Clone)]
 pub struct Perk {
     pub key: String,
     pub name: String,

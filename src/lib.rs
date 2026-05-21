@@ -19,3 +19,5 @@ pub mod util;
 pub mod screen;
 
 pub mod data;
+
+pub mod entity;

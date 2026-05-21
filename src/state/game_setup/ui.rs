@@ -169,10 +169,11 @@ pub fn layout(app: &App, frame: &mut Frame, main_block: Rect) {
             3,
         ).block(item_block), settings_layout[3]);
 
+    let perk_name = app.game_setup_state.perk.as_ref().map_or(String::new(), |i| i.name.clone());
     let perk_block = block_preset("perk");
     frame.render_widget(
         menu_block_text(
-            "".into(),
+            perk_name,
             app,
             4,
         ).block(perk_block), settings_layout[4]);

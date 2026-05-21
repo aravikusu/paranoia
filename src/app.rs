@@ -3,6 +3,7 @@ use std::error;
 use crate::app_settings::AppSettings;
 use crate::data::database::Database;
 use crate::screen::Screen;
+use crate::state::game::MainGameState;
 use crate::state::game_setup::GameSetupState;
 use crate::state::settings::SettingsState;
 use crate::state::title::TitleState;
@@ -21,6 +22,7 @@ pub struct App {
     pub title_state: TitleState,
     pub settings_state: SettingsState,
     pub game_setup_state: GameSetupState,
+    pub main_game_state: MainGameState,
 }
 
 impl Default for App {
@@ -33,6 +35,7 @@ impl Default for App {
             title_state: TitleState::default(),
             settings_state: SettingsState::default(),
             game_setup_state: GameSetupState::default(),
+            main_game_state: MainGameState::default(),
         }
     }
 }

@@ -97,6 +97,11 @@ impl GameSetupState {
          self.item = self.starting_items.get(idx).cloned();
     }
     
+     pub fn set_perk(&mut self) {
+        let idx = self.submenu_cursor.selected();
+         self.perk = self.perks.get(idx).cloned();
+    }
+
     pub fn increment_stat(&mut self) {
         if self.stat_points_to_allocate == 0 {
             return

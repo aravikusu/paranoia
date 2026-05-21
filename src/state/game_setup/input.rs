@@ -10,6 +10,7 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
                     app.game_setup_state.set_item();
                     app.game_setup_state.toggle_item();
                 } else {
+                    app.game_setup_state.set_perk();
                     app.game_setup_state.toggle_perk();
                 }
             }
@@ -103,6 +104,10 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
             }
             (KeyCode::Char('d') | KeyCode::Char('D') | KeyCode::Right, 2) => {
                 app.game_setup_state.increment_paranoia_level();
+            }
+            (KeyCode::Enter, 5) => {
+                app.change_screen(Screen::Game);
+                app.main_game_state.game_start(app.game_setup_state.stats.clone());
             }
             _ => {}
         }
