@@ -2,7 +2,7 @@ use ratatui::Frame;
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::prelude::{Alignment, Line, Stylize};
 use ratatui::style::{Color, Style, Styled};
-use ratatui::text::Text;
+use ratatui::text::{Span, Text};
 use ratatui::widgets::{Clear, Gauge, ListItem, ListState, Paragraph};
 
 use crate::app::App;
@@ -10,6 +10,16 @@ use crate::data::database::Describable;
 use crate::util::{block_preset, list_preset, menu_header};
 
 pub fn instructions(app: &App) -> Line<'static> {
+    if app.game_setup_state.editing_stats {
+        return Line::from(vec![
+            " navigate ".into(),
+            "<A/D/LEFT/RIGHT> ".set_style(Style::default().fg(app.settings.theme.highlight_color())).bold(),
+            if app.game_setup_state.editing_name { " deselect ".into() } else { " increment/decrement ".into() },
+            "<W/A/UP/DOWN> ".set_style(Style::default().fg(app.settings.theme.highlight_color())).bold(),
+            if app.game_setup_state.editing_name { " deselect ".into() } else { " go back ".into() },
+            "<ENTER/ESC> ".set_style(Style::default().fg(app.settings.theme.highlight_color())).bold(),
+        ])
+    }
     match app.game_setup_state.cursor.selected() {
         0 | 1 | 3 | 4 | 5 => {
             Line::from(vec![
@@ -88,8 +98,42 @@ pub fn layout(app: &App, frame: &mut Frame, main_block: Rect) {
             app,
             0,
         ).block(name_block), settings_layout[0]);
-    let stats_block = block_preset("stats");
-    frame.render_widget(stats_block, settings_layout[1]);
+    
+    let is_stats_selected = app.game_setup_state.cursor.selected() == 1;
+    let stats = [
+        ("STR", app.game_setup_state.stats.str),
+        ("INT", app.game_setup_state.stats.int),
+        ("AGI", app.game_setup_state.stats.agi),
+        ("LUK", app.game_setup_state.stats.luk)
+    ];
+
+    let spans: Vec<Span> = stats.iter().enumerate().map(|(idx, (name, value))| {
+        let style = if is_stats_selected && app.game_setup_state.editing_stats && app.game_setup_state.stats_cursor.selected() == idx {
+            Style::default().bg(app.settings.theme.fg_color()).fg(Color::Black)
+        } else {
+            Style::default()
+        };
+        format!("{}:{} ", name, value).set_style(style)
+    }).collect();
+
+    let mut paragraph = Paragraph::new(Line::from(spans).alignment(Alignment::Center));
+    if is_stats_selected && !app.game_setup_state.editing_stats {
+        paragraph = paragraph
+            .style(Style::default().bg(app.settings.theme.fg_color()))
+            .black();
+    }
+
+    let stats_block = block_preset("stats")
+        .style(
+            if is_stats_selected && ! app.game_setup_state.editing_stats {
+                Style::default().fg(Color::Black)
+            } else {
+                Style::default().fg(app.settings.theme.fg_color())
+            }
+        )
+        .title_bottom(Line::from(format!("{} points left to allocate", app.game_setup_state.stat_points_to_allocate)).right_aligned());
+
+    frame.render_widget(paragraph.block(stats_block), settings_layout[1]);
 
     let paranoia_block = block_preset("paranoia level")
         .title_bottom(Line::from(app.game_setup_state.paranoia.to_string()).right_aligned());
@@ -244,6 +288,7 @@ fn info_block_text<'a>(app: &App) -> Paragraph<'a> {
 
     let text = match app.game_setup_state.cursor.selected() {
         0 => "your... name. what everyone will refer to you as\nyou know... a name..".to_string(),
+        1 => "your stats. they let you do things, or something like that.".to_string(),
         2 => {
             let mut thing = String::from("your starting paranoia level. the more of it you have, the more things may be off...");
             if app.game_setup_state.paranoia > 50 {
