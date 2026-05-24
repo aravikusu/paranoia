@@ -2,6 +2,7 @@ use crate::{data::{item::Item, perk::Perk}, entity::character::Character, state:
 
 #[derive(Debug)]
 pub struct Player {
+    pub paranoia: u8,
     pub character: Character,
     pub inventory: Vec<Item>,
     pub perk: Perk
@@ -11,6 +12,7 @@ pub struct Player {
 impl Default for Player {
     fn default() -> Self {
         Self {
+            paranoia: 0,
             character: Character::default(),
             inventory: vec!(),
             perk: Perk::default(),
@@ -19,12 +21,14 @@ impl Default for Player {
 }
 
 impl Player {
-    pub fn start(&mut self,
+    pub fn start(
         name: String,
+        paranoia: u8,
         stats: Stats,
         start_item: Item,
         perk: Perk) -> Self {
         Self {
+            paranoia,
             character: Character::new(name, stats),
             inventory: vec!(start_item),
             perk

@@ -107,7 +107,14 @@ pub fn handle_input(key_event: KeyEvent, app: &mut App) {
             }
             (KeyCode::Enter, 5) => {
                 app.change_screen(Screen::Game);
-                app.main_game_state.game_start(app.game_setup_state.stats.clone());
+                app.main_game_state.game_start(
+                    app.game_setup_state.name.clone(),
+                    app.game_setup_state.paranoia.clone(),
+                    app.game_setup_state.stats.clone(),
+                    app.game_setup_state.item.as_ref().unwrap().clone(),
+                    app.game_setup_state.perk.as_ref().unwrap().clone()
+                );
+                app.game_setup_state.clean_up();
             }
             _ => {}
         }

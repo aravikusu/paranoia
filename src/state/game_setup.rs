@@ -40,7 +40,7 @@ pub struct GameSetupState {
     pub editing_stats: bool,
 
     pub name: String,
-    pub paranoia: i32,
+    pub paranoia: u8,
     pub item: Option<Item>,
     pub perk: Option<Perk>,
     pub stats: Stats,
@@ -163,5 +163,8 @@ impl GameSetupState {
             return false
         }
         true
+    }
+    pub fn clean_up(&self) {
+       // todo: clear variables
     }
 }
